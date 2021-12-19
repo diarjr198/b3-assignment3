@@ -16,7 +16,7 @@ class App {
 
     protected plugin = () => {
         const corsOptions = {
-            origin: "http://localhost:3000",
+            origin: "https://assignment3-fe.herokuapp.com",
         };
         this.app.use(cors(corsOptions));
         mongoDB.connect();

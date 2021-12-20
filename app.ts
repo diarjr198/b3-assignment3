@@ -18,7 +18,8 @@ class App {
         const corsOptions = {
             origin: "https://assignment3-fe.herokuapp.com",
         };
-        this.app.use(cors(corsOptions));
+        // this.app.use(cors(corsOptions));
+        this.app.use(cors());
         mongoDB.connect();
         this.app.use(cookieParser());
         this.app.use(express.json());

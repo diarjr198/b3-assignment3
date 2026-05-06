@@ -4,6 +4,11 @@ import mongoDB from "./configs/db";
 import cors from "cors";
 import routes from "./routes/routes";
 import http from "http";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./swagger";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 class App {
     public app: Application;
@@ -15,33 +20,22 @@ class App {
     }
 
     protected plugin = () => {
+        const corsOrigin = process.env.CORS_ORIGIN || "*";
         const corsOptions = {
-            origin: "https://assignment3-fe.herokuapp.com",
+            origin: corsOrigin,
         };
-        // this.app.use(cors(corsOptions));
-        this.app.use(cors());
+        this.app.use(cors(corsOptions));
         mongoDB.connect();
         this.app.use(cookieParser());
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: false }));
-        this.app.use(function (req, res, next) {
-            res.setHeader("Access-Control-Allow-Origin", "*");
-            res.setHeader(
-                "Access-Control-Allow-Headers",
-                "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-            );
-            res.setHeader(
-                "Access-Control-Allow-Methods",
-                "GET, POST, PATCH, PUT, DELETE, OPTIONS"
-            );
-            next();
-        });
     };
 
     protected route = () => {
         this.app.get("/", (req: Request, res: Response) => {
             res.status(200).json({ message: "OK" });
         });
+        this.app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
         this.app.use("/api", routes);
     };
 }

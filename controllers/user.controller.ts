@@ -2,6 +2,9 @@ import { NextFunction, Response, Request } from "express";
 import User from "../models/Users";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 class users {
     static async signin(req: Request, res: Response) {
@@ -20,14 +23,16 @@ class users {
             if (!passwordIsValid) {
                 res.status(404).json({ message: "Password wrong!" });
             }
+            const jwtSecret = process.env.JWT_SECRET || "abogoboga";
+            const jwtExpiresIn = parseInt(process.env.JWT_EXPIRES_IN || "86400");
             const token = jwt.sign(
                 {
                     id: result!.id,
                     username: result!.username,
                     role: result!.role,
                 },
-                "abogoboga",
-                { expiresIn: 86400 }
+                jwtSecret,
+                { expiresIn: jwtExpiresIn }
             );
             res.status(200).json({
                 token: token,

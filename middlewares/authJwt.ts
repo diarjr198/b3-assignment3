@@ -1,6 +1,9 @@
 import { NextFunction, Response, Request } from "express";
 import jwt, { VerifyErrors } from "jsonwebtoken";
 import User from "../models/Users";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 declare global {
     namespace Express {
@@ -17,10 +20,12 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
         return res.status(403).send({ message: "No token provided!" });
     }
 
+    const jwtSecret = process.env.JWT_SECRET || "abogoboga";
+
     jwt.verify(
         token.toString(),
-        "abogoboga",
-        (err: VerifyErrors | null, decoded: object | undefined) => {
+        jwtSecret,
+        (err: VerifyErrors | null, decoded: any) => {
             if (err) {
                 console.log(err);
                 return res.status(401).send({ message: "Unauthorized!" });

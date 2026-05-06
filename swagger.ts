@@ -1,4 +1,18 @@
 import swaggerJsdoc from "swagger-jsdoc";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const getServers = () => {
+    const apiBaseUrl = process.env.API_BASE_URL || `http://localhost:${process.env.PORT || 4000}`;
+
+    return [
+        {
+            url: apiBaseUrl,
+            description: process.env.NODE_ENV === "production" ? "Production server" : "Development server",
+        },
+    ];
+};
 
 const options: swaggerJsdoc.Options = {
     definition: {
@@ -12,16 +26,7 @@ const options: swaggerJsdoc.Options = {
                 email: "support@ecommerce.com",
             },
         },
-        servers: [
-            {
-                url: "http://localhost:4000",
-                description: "Development server",
-            },
-            {
-                url: "https://assignment3-fe.herokuapp.com",
-                description: "Production server",
-            },
-        ],
+        servers: getServers(),
         components: {
             securitySchemes: {
                 bearerAuth: {

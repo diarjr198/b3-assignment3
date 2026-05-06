@@ -35,6 +35,7 @@ Buat file `.env` di root project (atau copy dari `.env.example`):
 ```env
 # Server Configuration
 PORT=4000
+API_BASE_URL=http://localhost:4000
 
 # MongoDB Configuration (Local)
 MONGODB_URI=mongodb://localhost:27017/Assignment3
@@ -46,6 +47,15 @@ JWT_EXPIRES_IN=86400
 # CORS Configuration
 CORS_ORIGIN=*
 ```
+
+### Environment Variables Explanation
+
+- **PORT**: Port untuk server (default: 4000)
+- **API_BASE_URL**: Base URL untuk Swagger API documentation (penting untuk production dengan reverse proxy)
+- **MONGODB_URI**: Connection string MongoDB
+- **JWT_SECRET**: Secret key untuk JWT token
+- **JWT_EXPIRES_IN**: JWT token expiration time (dalam detik)
+- **CORS_ORIGIN**: Allowed CORS origin (* untuk allow all, atau specific domain)
 
 ### MongoDB Setup
 
@@ -60,6 +70,17 @@ MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/Assignment3?retr
 ```
 
 📖 **Panduan lengkap setup MongoDB local**: Lihat [MONGODB_SETUP.md](MONGODB_SETUP.md)
+
+### Production Setup
+
+**Untuk production dengan custom port dan domain:**
+```env
+PORT=39918
+API_BASE_URL=https://yourdomain.com
+NODE_ENV=production
+```
+
+📖 **Panduan lengkap production deployment**: Lihat [PRODUCTION_DEPLOYMENT.md](PRODUCTION_DEPLOYMENT.md)
 
 ## 📚 API Documentation
 
